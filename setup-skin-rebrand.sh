@@ -1,3 +1,48 @@
+#!/bin/bash
+
+# 1. Update Navigation
+cat << 'INNEREOF' > src/navigation.ts
+import { getPermalink } from './utils/permalinks';
+
+export const headerData = {
+  links: [
+    { text: 'Grow Your Clinic', href: getPermalink('/#features') },
+    { text: 'How It Works', href: getPermalink('/#howitworks') },
+    { text: 'The Story', href: getPermalink('/about') },
+    { text: 'Lifetime Access - Order Now', href: getPermalink('/pricing') },
+  ],
+  actions: [
+    { text: 'Get Lifetime Access - $99', variant: 'primary', href: '/pricing' }
+  ],
+};
+
+export const footerData = {
+  links: [
+    {
+      title: 'Grow Your Clinic’s Buzz',
+      links: [
+        { text: "Claim Your Spot – Just $99", href: getPermalink('/pricing') },
+        { text: 'Why We Love Estheticians', href: getPermalink('/about') },
+        { text: 'Get in Touch', href: getPermalink('/contact') },
+      ],
+    },
+  ],
+  secondaryLinks: [
+    { text: 'Terms of Service', href: getPermalink('/terms') },
+    { text: 'Privacy Policy', href: getPermalink('/privacy') },
+  ],
+  socialLinks: [],
+  footNote: `
+    <div class="inline-flex items-center justify-center flex-wrap">
+      <img class='w-5 h-5 mr-2 rounded-sm align-middle' src='/images/footer-icon.webp' alt='Testimonial Skin' loading='lazy'>
+      <span class="align-middle">✨ Your expertise, amplified. | © ${new Date().getFullYear()} <a class="text-blue-600 underline dark:text-muted" href="#">Testimonial Skin</a> All rights reserved.</span>
+    </div>
+  `,
+};
+INNEREOF
+
+# 2. Update Index Page (4 FAQs restored + Full Content)
+cat << 'INNEREOF' > src/pages/index.astro
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import Header from '~/components/widgets/Header.astro';
@@ -115,3 +160,99 @@ const metadata = {
     image={{ src: '/images/testimonial-3.webp', alt: 'Testimonial Skin', width: 600, height: 600 }}
   />
 </Layout>
+INNEREOF
+
+# 3. Update About Page
+cat << 'INNEREOF' > src/pages/about.astro
+---
+import Hero from '~/components/widgets/Hero.astro';
+import Hero2 from '~/components/widgets/Hero2.astro';
+import Content from '~/components/widgets/Content.astro';
+import Layout from '~/layouts/PageLayout.astro';
+import Pricing from '~/components/widgets/Pricing.astro';
+import { lifetimeDeal } from '~/data/pricingData';
+
+const metadata = {
+  title: 'Our Mission - Testimonial Skin | Built for Estheticians',
+  description: 'We built Testimonial Skin because skincare is a science and an art, but business is about trust.',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+<Hero2
+    tagline="We Grow Your Clinic ⭐⭐⭐⭐⭐"
+    title='You Create the Radiant Skin.<br/><span class="text-accent dark:text-white">We Help You Build Your Reputation.</span>'
+    subtitle="Amazing estheticians lose clients without reviews. We ensure your reputation matches your results. No monthly fees—just a simple, automated system to keep your books full."
+    video="/images/hero-animation.mp4" 
+    poster="/images/hero-poster.webp"
+    actions={[{ variant: 'primary', text: 'Claim My Lifetime Access - $99', href: '/pricing/' }]}
+  />
+  <Content
+    isReversed
+    items={[
+        { title: 'The "Radiant Results" Moment', description: 'The best time for a review is the second your client sees their glowing skin in the mirror. Your branded QR codes capture that post-treatment glow instantly.', icon: 'tabler:sparkles' },
+        { title: 'Local Search SEO', description: 'When someone searches "best facial near me," Google looks for star rating and review frequency. We automate both.', icon: 'tabler:map-pin' },
+        { title: 'Client Retention', description: 'A client who leaves a 5-star review is 40% more likely to re-book. Our system turns a one-time treatment into a lifelong advocate.', icon: 'tabler:users' },
+    ]}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+        Why your clinic needs <span class="text-accent">Reviews on Autopilot ⭐⭐⭐⭐⭐</span>
+      </h3>
+      <p>Clients look at results, not promises. Your reviews are your digital portfolio—we make sure yours is a 5-star introduction.</p>
+    </Fragment>
+    <Fragment slot="image">
+       <img src="/images/testimonial-4.webp" alt="Happy skin clinic client" class="rounded-lg shadow-xl w-full" />
+    </Fragment>
+  </Content>
+
+  <Content
+    items={[
+      { title: 'Zero Maintenance', description: 'We know you’re busy with back-to-back treatments. Once we set up your system, you never have to log in or manage anything.', icon: 'tabler:settings' },
+      { title: 'The "Wall of Love" Widget', description: 'We automatically sync and showcase your best reviews on your website, building instant trust with new visitors.', icon: 'tabler:stars' },
+      { title: 'One-Time Payment', description: 'We don’t believe in monthly fees. $99 once, and you own the system for the life of your clinic.', icon: 'tabler:coin' },
+    ]}
+  >
+    <Fragment slot="content">
+      <h2 class="text-3xl font-bold tracking-tight dark:text-white sm:text-4xl mb-4">Our Commitment to Your Success</h2>
+      <p class="text-xl text-muted dark:text-slate-400 mb-8">We handle the technical hurdles so you can stay focused on your clients. We are a partner in your growth.</p>
+    </Fragment>
+    <Fragment slot="image">
+      <img src="/images/testimonial-3.webp" alt="Skin professional looking at feedback" class="rounded-lg shadow-xl w-full" />
+    </Fragment>
+  </Content>
+</Layout>
+INNEREOF
+
+# 4. Update Pricing and Components
+sed -i "s/Let's Talk About Your Salon/Let's Talk About Your Clinic/g" src/pages/contact.astro
+sed -i "s/faster than a blow-dry/faster than a facial treatment/g" src/pages/contact.astro
+sed -i 's/HairTestimonial/SkinTestimonial/g' src/components/widgets/Pricing.astro
+sed -i 's/HTFP99/STFP99/g' src/components/widgets/Pricing.astro
+sed -i 's/Salon Name/Clinic Name/g' src/components/widgets/Pricing.astro
+sed -i 's/Salon Business Name/Clinic Business Name/g' src/components/widgets/Pricing.astro
+
+# 5. Update Announcement
+cat << 'INNEREOF' > src/components/widgets/Announcement.astro
+---
+---
+<div class="dark text-sm bg-black hidden md:flex items-center justify-center overflow-hidden px-3 py-2 relative text-ellipsis whitespace-nowrap">
+  <div class="flex items-center gap-2">
+    <span>⭐️⭐️⭐️⭐️⭐️ </span>
+    <span class="text-white font-medium">
+      ✨ Capture radiant reviews effortlessly and boost your clinic&#39;s bookings.
+    </span>
+  </div>
+  <div class="absolute right-4 top-0 h-full flex items-center">
+    <span class="text-white font-medium">Same-day setup. Just $99</span>
+  </div>
+</div>
+INNEREOF
+
+# 6. Git Push
+git add .
+git commit -m "Rebrand complete: Skin Clinic & MedSpa"
+git push origin main
+
+echo "Rebrand successfully applied and pushed to GitHub!"
