@@ -8,7 +8,7 @@ import { lifetimeDeal } from '~/data/pricingData';
 
 const metadata = {
   title: 'Our Mission - Testimonial Skin | Built for Estheticians',
-  description: 'We built Testimonial Skin because skincare is a science and an art, but business is about trust.',
+  description: 'We built Testimonial Skin because skincare is a science and an art, but business is about trust. Learn how we help clinics dominate Google search.',
   ignoreTitleTemplate: true,
 };
 ---
@@ -22,6 +22,7 @@ const metadata = {
     poster="/images/hero-poster.webp"
     actions={[{ variant: 'primary', text: 'Claim My Lifetime Access - $99', href: '/pricing/' }]}
   />
+
   <Content
     isReversed
     items={[
@@ -50,10 +51,22 @@ const metadata = {
   >
     <Fragment slot="content">
       <h2 class="text-3xl font-bold tracking-tight dark:text-white sm:text-4xl mb-4">Our Commitment to Your Success</h2>
-      <p class="text-xl text-muted dark:text-slate-400 mb-8">We handle the technical hurdles so you can stay focused on your clients. We are a partner in your growth.</p>
+      <p class="text-xl text-muted dark:text-slate-400 mb-8">We handle the technical hurdles so you can stay focused on your clients. We are a partner in your growth, ensuring your online presence is as flawless as your results.</p>
     </Fragment>
     <Fragment slot="image">
       <img src="/images/testimonial-3.webp" alt="Skin professional looking at feedback" class="rounded-lg shadow-xl w-full" />
     </Fragment>
   </Content>
+
+  <Pricing
+    class="pb-0"
+    title={`<span class="text-accent dark:text-white">Invest in Your Clinic’s Future.</span>`}
+    prices={[lifetimeDeal]}
+  />
+
+  <Hero class="-mt-16">
+    <Fragment slot="image">
+      <img src="/images/testimonial-6.webp" alt="A wall of radiant reviews" class="mx-auto rounded-md w-full shadow-lg" loading="lazy" />
+    </Fragment>
+  </Hero>
 </Layout>
